@@ -1,0 +1,19 @@
+/* Global styles to handle touch events and prevent passive event warnings */
+* {
+  /* Improve touch handling on mobile devices */
+  touch-action: manipulation;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Prevent text selection on mobile */
+*:not(input, textarea) {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Make sure buttons and links are properly sized for touch */
+button, a, [role="button"] {
+  touch-action: manipulation;
+}
