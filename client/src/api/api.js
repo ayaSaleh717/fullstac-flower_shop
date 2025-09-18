@@ -84,12 +84,26 @@ export const getProducts = async (category) => {
     return response.data;
 };
 
-export const addProduct = async (productData) => {
+export const addProduct = async (formData) => {
   try {
-    const response = await api.post('/products/add', productData);
+    // Create a new instance of axios with the base URL
+    const instance = axios.create({
+      baseURL: API_URL,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+
+    const response = await instance.post('/products/add', formData);
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.details || error.response?.data?.error || 'Failed to add product. Please try again.');
+    console.error('API Error:', error);
+    const errorMessage = error.response?.data?.message || 
+                        error.response?.data?.error || 
+                        error.message || 
+                        'Failed to add product. Please try again.';
+    throw new Error(errorMessage);
   }
 };
 

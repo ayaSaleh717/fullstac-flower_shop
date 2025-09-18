@@ -126,72 +126,34 @@ const AddProduct = ({ onClose, onAddProduct }) => {
       console.log('=== Request Headers ===');
       console.log('Authorization:', `Bearer ${token ? `${token.substring(0, 15)}...` : 'MISSING'}`);
       
-      const requestOptions = {
-        method: 'POST',
-        headers: {},
-        credentials: 'include',
-        body: formData
-      };
-      
-      // Add Authorization header
-      requestOptions.headers.Authorization = `Bearer ${token}`;
-      
-      console.log('=== Final Request Options ===');
-      console.log(requestOptions);
-      
-      const response = await fetch('http://localhost:3051/api/products/add', requestOptions);
-      
-      console.log('=== Response Status ===');
-      console.log('Status:', response.status, response.statusText);
-      
-      const responseData = await response.json().catch(e => {
-        console.error('Error parsing response:', e);
-        return { message: 'Failed to parse server response' };
-      });
-      
-      console.log('=== Response Data ===');
-      console.log(responseData);
-
-      if (!response.ok) {
-        // Log detailed error information
-        console.error('Server responded with error:', {
-          status: response.status,
-          statusText: response.statusText,
-          data: responseData
+      try {
+        // Use the addProduct function from the API module
+        const response = await addProduct(formData);
+        console.log('=== Response Data ===');
+        console.log(response);
+        
+        // Reset form
+        setProduct({
+          name: '',
+          farm: '',
+          price: '',
+          category: '',
+          description: '',
+          qunty: 1,
+          image: null,
+          imageUrl: ''
         });
+        setImagePreview('');
+        setImageSource('upload');
         
-        // Provide more specific error messages based on status code
-        let errorMessage = 'Failed to add product';
-        if (response.status === 400) {
-          errorMessage = responseData.message || 'Invalid request. Please check your input.';
-        } else if (response.status === 401) {
-          errorMessage = 'Session expired. Please log in again.';
-          // Optionally redirect to login
-          // window.location.href = '/login';
-        } else if (response.status === 500) {
-          errorMessage = 'Server error. Please try again later.';
-        }
-        
-        throw new Error(errorMessage);
+        onClose();
+        onAddProduct(); // Refresh the product list
+        alert('Product added successfully!');
+      } catch (error) {
+        console.error('API Error:', error);
+        throw error; // Re-throw to be caught by the outer catch block
       }
 
-      // Reset form
-      setProduct({
-        name: '',
-        farm: '',
-        price: '',
-        category: '',
-        description: '',
-        qunty: 1,
-        image: null,
-        imageUrl: ''
-      });
-      setImagePreview('');
-      setImageSource('upload');
-      
-      onClose();
-      onAddProduct(); // Refresh the product list
-      alert('Product added successfully!');
     } catch (error) {
       console.error('Error in handleSubmit:', error);
       alert(error.message || 'An error occurred. Please try again.');
