@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './StickyNavbar.css';
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from '../../redux/feature/authSlice';
 import { logoutUser } from '../../api/api';
 import { emptycartIteam } from '../../redux/feature/cartSlice';
+import { FaBars, FaTimes, FaShoppingCart, FaUser } from 'react-icons/fa';
 
 
 const StickyNavbar = () => {
@@ -51,80 +52,71 @@ const StickyNavbar = () => {
         }
     };
 
-  
     const handleNavClick = () => {
         setMenuOpen(!isMenuOpen);
     };
 
+    // Toggle mobile menu
+    const toggleMenu = () => {
+        setMenuOpen(!isMenuOpen);
+    };
+
+    // Close mobile menu when clicking outside
+    const menuRef = useRef();
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setMenuOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     return (
-        <nav className={`navbar ${isSticky ? 'sticky' : ''}`}>
+        <nav className={`navbar ${isSticky ? 'sticky' : ''}`} ref={menuRef}>
             <div className="navbar-container">
-                <NavLink to="/" className="text-decoration-none mx-2 navbar-logo">
-                    Bloomora{" "}
-                </NavLink>
+                <Link to="/" className="navbar-logo" onClick={() => setMenuOpen(false)}>
+                    Bloomora
+                </Link>
 
-
-                <div className="menu-icon" onClick={handleNavClick}>
-                    <i className={isMenuOpen ? 'fas fa-times' : 'fas fa-bars         '} />
+                {/* Mobile menu button */}
+                <div className="menu-icon" onClick={toggleMenu}>
+                    {isMenuOpen ? <FaTimes /> : <FaBars />}
                 </div>
-                <ul className={isMenuOpen ? 'nav-menu active' : 'nav-menu'}>
-                {isMenuOpen && (
-                            <div className="mobile-menu-buttons">
-                                {user ? (
-                                    <>
-                                        <NavLink to="/profile" className="btn" onClick={handleNavClick}>{user.name}</NavLink>
-                                        <NavLink to="/cart" className="btn" onClick={handleNavClick}>Cart ({cart.length})</NavLink>
-                                        <button className="btn" onClick={handleLogout}>Logout</button>
-                                    </>
-                                ) : (
-                                    <>
-                                        <NavLink to="/login" className="btn" onClick={handleNavClick}>Login</NavLink>
-                                        <NavLink to="/register" className="btn" onClick={handleNavClick}>Register</NavLink>
-                                    </>
-                                )}
-                            </div>
-                        )}
 
-
-<div className="desktop-menu-buttons d-none d-lg-flex align-items-center">
-                            <div className="icon-container">
-                                <NavLink to="/cart" className="nav-icon">
-                                    <i className="fas fa-shopping-cart fa-lg"></i> <span>{cart.length > 0 && `(${cart.length})`}</span>
-                                </NavLink>
-                                <div className="icon-tooltip">Cart</div>
-                            </div>
+                <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
+                    {isMenuOpen && (
+                        <div className="mobile-menu-buttons">
                             {user ? (
                                 <>
-                                    <div className="icon-container">
-                                        <NavLink to="/profile" className="nav-icon">
-                                            <i className="fas fa-user-circle fa-lg"></i>
-                                        </NavLink>
-                                        <div className="icon-tooltip">{user.name}</div>
-                                    </div>
-                                    <div className="icon-container">
-                                        <button className="nav-icon" onClick={handleLogout}>
-                                            <i className="fas fa-sign-out-alt fa-lg"></i>
-                                        </button>
-                                        <div className="icon-tooltip">Logout</div>
-                                    </div>
-                                </> 
+                                    <NavLink to="/profile" className="btn" onClick={handleNavClick}>
+                                        <FaUser className="nav-icon" />
+                                        <span className="nav-text">{user.name}</span>
+                                    </NavLink>
+                                    <NavLink to="/cart" className="btn" onClick={handleNavClick}>
+                                        <FaShoppingCart className="nav-icon" />
+                                        <span className="nav-text">Cart ({cart.length})</span>
+                                    </NavLink>
+                                    <button className="btn" onClick={handleLogout}>
+                                        <span className="nav-text">Logout</span>
+                                    </button>
+                                </>
                             ) : (
                                 <>
-                                    <div className="icon-container">
-                                        <NavLink to="/login" className="nav-icon">
-                                            <i className="fas fa-sign-in-alt fa-lg"></i>
-                                        </NavLink>
-                                        <div className="icon-tooltip">Login</div>
-                                    </div>
-                                    <div className="icon-container">
-                                        <NavLink to="/register" className="nav-icon">
-                                            <i className="fas fa-user-plus fa-lg"></i>
-                                        </NavLink>
-                                        <div className="icon-tooltip">Register</div>
-                                    </div>
-                                </> 
+                                    <NavLink to="/login" className="btn" onClick={handleNavClick}>
+                                        <span className="nav-text">Login</span>
+                                    </NavLink>
+                                    <NavLink to="/register" className="btn" onClick={handleNavClick}>
+                                        <span className="nav-text">Register</span>
+                                    </NavLink>
+                                </>
                             )}
                         </div>
+                    )}
                 </ul>
             </div>
         </nav>
