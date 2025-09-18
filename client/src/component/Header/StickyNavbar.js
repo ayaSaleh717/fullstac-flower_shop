@@ -15,7 +15,6 @@ const StickyNavbar = () => {
     const { user } = useSelector((state) => state.auth); // Get user from Redux store
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    
     useEffect(() => {
         const handleScroll = () => {
             const offset = window.scrollY;

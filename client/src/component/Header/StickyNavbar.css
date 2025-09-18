@@ -52,15 +52,31 @@
 .navbar-logo {
   color: #333;
   justify-self: start;
-  margin-left: 20px;
+  margin: 0 20px;
   cursor: pointer;
   text-decoration: none;
   font-size: 1.5rem;
   font-weight: bold;
   display: flex;
   align-items: center;
+  white-space: nowrap;
+  transition: all 0.3s ease;
 }
 
+/* Responsive logo sizing */
+@media screen and (max-width: 768px) {
+  .navbar-logo {
+    font-size: 1.3rem;
+    margin: 0 10px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navbar-logo {
+    font-size: 1.1rem;
+    margin: 0 5px;
+  }
+}
 
 .nav-menu {
   display: flex;
@@ -102,6 +118,9 @@
   color: #333;
   padding: 0.5rem;
   z-index: 1001;
+  transition: all 0.3s ease;
+  margin-left: auto; /* Push to the right */
+  order: 2; /* Ensure it stays on the right */
 }
 
 .menu-icon:hover {
@@ -120,11 +139,21 @@
 /* Responsive Styles */
 @media screen and (max-width: 960px) {
   .navbar {
-    padding: 0.5rem 1rem;
+    padding: 0.3rem 0.5rem;
   }
   
   .navbar-container {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
+    justify-content: space-between; /* Ensure proper spacing */
+  }
+  
+  .menu-icon {
+    display: block;
+  }
+  
+  .navbar-logo {
+    font-size: 1.3rem;
+    margin: 0 10px;
   }
   
   .nav-menu {
