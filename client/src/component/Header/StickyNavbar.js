@@ -83,41 +83,66 @@ const StickyNavbar = () => {
                     Bloomora
                 </Link>
 
+                {/* Desktop Navigation */}
+                <div className="desktop-nav">
+                    {user ? (
+                        <div className="nav-items">
+                            <NavLink to="/profile" className="nav-link">
+                                <FaUser className="nav-icon" />
+                                <span className="nav-text">{user.name}</span>
+                            </NavLink>
+                            <NavLink to="/cart" className="nav-link">
+                                <FaShoppingCart className="nav-icon" />
+                                <span className="nav-text">Cart ({cart.length})</span>
+                            </NavLink>
+                            <button className="nav-link" onClick={handleLogout}>
+                                <span className="nav-text">Logout</span>
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="nav-items">
+                            <NavLink to="/login" className="nav-link">
+                                <span className="nav-text">Login</span>
+                            </NavLink>
+                            <NavLink to="/register" className="nav-link">
+                                <span className="nav-text">Register</span>
+                            </NavLink>
+                        </div>
+                    )}
+                </div>
+
                 {/* Mobile menu button */}
                 <div className="menu-icon" onClick={toggleMenu}>
                     {isMenuOpen ? <FaTimes /> : <FaBars />}
                 </div>
 
-                <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
-                    {isMenuOpen && (
-                        <div className="mobile-menu-buttons">
-                            {user ? (
-                                <>
-                                    <NavLink to="/profile" className="btn" onClick={handleNavClick}>
-                                        <FaUser className="nav-icon" />
-                                        <span className="nav-text">{user.name}</span>
-                                    </NavLink>
-                                    <NavLink to="/cart" className="btn" onClick={handleNavClick}>
-                                        <FaShoppingCart className="nav-icon" />
-                                        <span className="nav-text">Cart ({cart.length})</span>
-                                    </NavLink>
-                                    <button className="btn" onClick={handleLogout}>
-                                        <span className="nav-text">Logout</span>
-                                    </button>
-                                </>
-                            ) : (
-                                <>
-                                    <NavLink to="/login" className="btn" onClick={handleNavClick}>
-                                        <span className="nav-text">Login</span>
-                                    </NavLink>
-                                    <NavLink to="/register" className="btn" onClick={handleNavClick}>
-                                        <span className="nav-text">Register</span>
-                                    </NavLink>
-                                </>
-                            )}
+                {/* Mobile Navigation */}
+                <div className={`mobile-nav ${isMenuOpen ? 'active' : ''}`}>
+                    {user ? (
+                        <div className="mobile-nav-items">
+                            <NavLink to="/profile" className="mobile-nav-link" onClick={handleNavClick}>
+                                <FaUser className="nav-icon" />
+                                <span className="nav-text">{user.name}</span>
+                            </NavLink>
+                            <NavLink to="/cart" className="mobile-nav-link" onClick={handleNavClick}>
+                                <FaShoppingCart className="nav-icon" />
+                                <span className="nav-text">Cart ({cart.length})</span>
+                            </NavLink>
+                            <button className="mobile-nav-link" onClick={handleLogout}>
+                                <span className="nav-text">Logout</span>
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="mobile-nav-items">
+                            <NavLink to="/login" className="mobile-nav-link" onClick={handleNavClick}>
+                                <span className="nav-text">Login</span>
+                            </NavLink>
+                            <NavLink to="/register" className="mobile-nav-link" onClick={handleNavClick}>
+                                <span className="nav-text">Register</span>
+                            </NavLink>
                         </div>
                     )}
-                </ul>
+                </div>
             </div>
         </nav>
     );
