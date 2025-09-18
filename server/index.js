@@ -25,7 +25,7 @@ import cartRoute from './routes/cartRoutes.js';
 
 // CORS configuration
 const corsOptions = {
-  origin: 'http://localhost:3000',
+  origin: ['https://flower-shop-c022.onrender.com','http://localhost:3000'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
