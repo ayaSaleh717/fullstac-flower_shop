@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Define the base URL for your API. Make sure your server is running on this port.
-const API_URL = 'http://localhost:3051/api';
+const API_URL = 'https://flower-shop-backend-7pay.onrender.com';
 
 // Create an instance of axios with the base URL
 const api = axios.create({
