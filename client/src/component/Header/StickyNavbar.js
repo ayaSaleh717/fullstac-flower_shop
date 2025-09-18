@@ -83,7 +83,7 @@ const StickyNavbar = () => {
                     Bloomora
                 </Link>
 
-                {/* Desktop Navigation */}
+                {/* Desktop Navigation - Always Visible */}
                 <div className="desktop-nav">
                     {user ? (
                         <div className="nav-items">
