@@ -21,45 +21,20 @@ const Categorys = ({ selectedCategory, onSelectCategory }) => {
     }, []);
 
     return (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "10px",
-            marginBottom: "20px",
-          }}
-        >
+        <div className="category-container">
             <button
-              className="btn-cat"
+              className={`btn-cat ${selectedCategory === null ? 'active' : ''}`}
               onClick={() => onSelectCategory(null)}
-              style={{
-                padding: "10px 15px",
-                backgroundColor:
-                  selectedCategory === null ? "#e91e63" : "#e0e0e0",
-                color: selectedCategory === null ? "#fff" : "#000",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
             >
               All
             </button>
             {categories.map((category) => (
                 <button
-                  className="btn-cat"
+                  className={`btn-cat ${selectedCategory === category._id ? 'active' : ''}`}
                   key={category._id}
                   onClick={() => onSelectCategory(category._id)}
-                  style={{
-                    padding: "10px 15px",
-                    backgroundColor:
-                      selectedCategory === category._id  ? "#e91e63" : "#e0e0e0",
-                    color: selectedCategory === category._id ? "#fff" : "#000",
-                    border: "none",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                  }}
                 >
-                  {category.catName}
+                  {category.name}
                 </button>
             ))}
         </div>
