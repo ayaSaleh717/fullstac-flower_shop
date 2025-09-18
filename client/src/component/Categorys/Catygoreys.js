@@ -9,11 +9,19 @@ const Categorys = ({ selectedCategory, onSelectCategory }) => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const data = await getCategories();
-                // console.log(data);
-                setCategories(data);
+                const response = await getCategories();
+                console.log('Categories response:', response);
+                
+                // The API returns an array of categories directly
+                if (Array.isArray(response)) {
+                    setCategories(response);
+                } else {
+                    console.warn('Unexpected categories data format:', response);
+                    setCategories([]);
+                }
             } catch (error) {
                 console.error('Failed to fetch categories:', error);
+                setCategories([]);
             }
         };
 
@@ -28,15 +36,18 @@ const Categorys = ({ selectedCategory, onSelectCategory }) => {
             >
               All
             </button>
-            {categories.map((category) => (
-                <button
-                  className={`btn-cat ${selectedCategory === category._id ? 'active' : ''}`}
-                  key={category._id}
-                  onClick={() => onSelectCategory(category._id)}
-                >
-                  {category.name}
-                </button>
-            ))}
+            {categories.map((category) => {
+                console.log('Category object:', category); // Debug log
+                return (
+                    <button
+                        className={`btn-cat ${selectedCategory === category._id ? 'active' : ''}`}
+                        key={category._id}
+                        onClick={() => onSelectCategory(category._id)}
+                    >
+                        {category.catName || category.name || 'Unnamed Category'}
+                    </button>
+                );
+            })}
         </div>
     );
 };
