@@ -1,6 +1,9 @@
 import User from '../models/users.model.js';
 import jwt from 'jsonwebtoken';
-import bcrypt from "bcryptjs";
+import bcrypt from 'bcryptjs';
+
+// Enable debug logging for bcrypt
+console.log('bcrypt module:', bcrypt);
 
 
 // Get all users
@@ -146,7 +149,18 @@ const loginUser = async (req, res) => {
       });
     }
 
-    const isMatch = await bcrypt.compare(password, passwordToCheck);
+    let isMatch = false;
+    try {
+      isMatch = await bcrypt.compare(password, passwordToCheck);
+      console.log('Password comparison result:', isMatch);
+    } catch (error) {
+      console.error('Error comparing passwords:', error);
+      return res.status(500).json({
+        success: false,
+        message: 'Error during authentication',
+        error: error.message
+      });
+    }
     
     if (!isMatch) {
       console.log(`Login attempt failed - Invalid password for user: ${email}`);
